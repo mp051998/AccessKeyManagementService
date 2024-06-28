@@ -5,14 +5,20 @@ import { AccessKeyManagementController } from './access-key-management/access-ke
 import { AccessKeyManagementService } from './access-key-management/access-key-management.service';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
-    // TODO: Move the host and port to a .env file
+    ConfigModule.forRoot(
+      {
+        isGlobal: true,
+        envFilePath: '.env'
+      }
+    ),
     RedisModule.forRoot({
       config: {
-        host: 'localhost',
-        port: 6379
+        host: process.env.REDIS_HOST,
+        port: parseInt(process.env.REDIS_PORT),
       }
     })
   ],
