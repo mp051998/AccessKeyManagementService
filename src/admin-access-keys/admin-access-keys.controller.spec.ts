@@ -1,17 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { AccessKeyManagementController } from './access-key-management.controller';
+import { AdminAccessKeysController } from './admin-access-keys.controller';
 
 // TODO: Add tests
 describe('AccessKeyManagementController', () => {
-  let controller: AccessKeyManagementController;
+  let controller: AdminAccessKeysController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [AccessKeyManagementController],
+      controllers: [AdminAccessKeysController],
     }).compile();
 
-    controller = module.get<AccessKeyManagementController>(AccessKeyManagementController);
+    controller = module.get<AdminAccessKeysController>(AdminAccessKeysController);
   });
 
   it('should be defined', () => {

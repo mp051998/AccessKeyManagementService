@@ -1,22 +1,22 @@
 import { BadRequestException, Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 
-import { AccessKeyManagementService } from './access-key-management.service';
+import { AdminAccessKeysService } from './admin-access-keys.service';
 
-@Controller('access-key-management')
-export class AccessKeyManagementController {
+@Controller('admin/access-keys')
+export class AdminAccessKeysController {
 
-  constructor(private readonly accessKeyManagementService: AccessKeyManagementService) { }
+  constructor(private readonly adminAccessKeysSvc: AdminAccessKeysService) { }
 
   // Endpoint to get all the active access keys
   @Get('/')
   async getActiveKeys() {
-    return await this.accessKeyManagementService.getActiveKeys();
+    return await this.adminAccessKeysSvc.getActiveKeys();
   }
 
   // Endpoint to get a specific access key by key
   @Get('/:key')
   async getKey(@Param('key') key: string) {
-    return await this.accessKeyManagementService.getKey(key);
+    return await this.adminAccessKeysSvc.getKey(key);
   }
 
   // Endpoint to generate a new access key
@@ -24,12 +24,12 @@ export class AccessKeyManagementController {
   async generateKey(@Body() { expireAfterMins, rateLimitPerMin }: { expireAfterMins: number; rateLimitPerMin: number }) {
     const expireAfterMilliSeconds = expireAfterMins * 60 * 1000;
     const expiryTime = new Date(Date.now() + parseInt(expireAfterMilliSeconds.toString()));
-    return await this.accessKeyManagementService.generateKey(rateLimitPerMin, expiryTime);
+    return await this.adminAccessKeysSvc.generateKey(rateLimitPerMin, expiryTime);
   }
 
   @Patch('/')
   async updateKey(@Body() { key, rateLimitPerMin, expireAt }: { key: string; rateLimitPerMin?: number; expireAt?: Date }) {
-    const accessKeyData = await this.accessKeyManagementService.getKey(key);
+    const accessKeyData = await this.adminAccessKeysSvc.getKey(key);
     if (!accessKeyData) {
       throw new BadRequestException('Access key not found');
     }
@@ -44,7 +44,7 @@ export class AccessKeyManagementController {
     if (!expireAt) {
       expireAt = accessKeyData.expireAt;
     }
-    return await this.accessKeyManagementService.updateKey(key, rateLimitPerMin, expireAt);
+    return await this.adminAccessKeysSvc.updateKey(key, rateLimitPerMin, expireAt);
   }
 
   // // TODO: Since the token service will be using redis pub-sub to cache valid tokens and maintain rate limits,

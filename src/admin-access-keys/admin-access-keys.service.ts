@@ -6,7 +6,7 @@ import { AccessKeyService } from 'src/models/mongo/access-key/access-key.service
 import { v4 as uuidv4 } from 'uuid'; // For generating unique keys
 
 @Injectable()
-export class AccessKeyManagementService {
+export class AdminAccessKeysService {
 
   private accessKeySvc: AccessKeyService;
   private publisher: RedisClient;

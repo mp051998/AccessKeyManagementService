@@ -1,8 +1,7 @@
 import { Module, OnModuleInit } from '@nestjs/common';
 import { RedisModule, RedisService } from '@liaoliaots/nestjs-redis';
 
-import { AccessKeyManagementController } from './access-key-management/access-key-management.controller';
-import { AccessKeyManagementService } from './access-key-management/access-key-management.service';
+import { AdminAccessKeysModule } from './admin-access-keys/admin-access-keys.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
@@ -24,10 +23,11 @@ import { MongooseModule } from '@nestjs/mongoose';
       }
     }),
     MongooseModule.forRoot(process.env.MONGO_CONNECTION_STRING, {}),
-    MongoModelsModule
+    MongoModelsModule,
+    AdminAccessKeysModule
   ],
-  controllers: [AppController, AccessKeyManagementController],
-  providers: [AppService, AccessKeyManagementService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule implements OnModuleInit {
   constructor(private readonly redisSvc: RedisService) {
