@@ -27,4 +27,15 @@ export class AccessKeyService {
   async getAllActiveAccessKeys(): Promise<AccessKeyDocument[]> {
     return await this.accessKeyModel.find({ expireAt: { $gt: new Date() } });
   }
+
+  // Update access key
+  async updateAccessKey(key: string, rateLimitPerMin: number, expireAt: Date): Promise<AccessKeyDocument> {
+    // To ensure the document is updated properly and the updated document is returned, you should set the new option to true
+    // useFindAndModify to false is recommended to use MongoDB's findOneAndUpdate() function behind the scenes, which provides better performance and more accurate results.
+    return await this.accessKeyModel.findOneAndUpdate(
+      { key },
+      { rateLimitPerMin, expireAt },
+      { new: true, useFindAndModify: false }
+    );
+  }
 }
