@@ -6,6 +6,8 @@ import { AccessKeyManagementService } from './access-key-management/access-key-m
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
+import { MongoModelsModule } from './models/mongo/mongo-models.module';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
@@ -20,7 +22,9 @@ import { ConfigModule } from '@nestjs/config';
         host: process.env.REDIS_HOST,
         port: parseInt(process.env.REDIS_PORT),
       }
-    })
+    }),
+    MongooseModule.forRoot(process.env.MONGO_CONNECTION_STRING, {}),
+    MongoModelsModule
   ],
   controllers: [AppController, AccessKeyManagementController],
   providers: [AppService, AccessKeyManagementService],
