@@ -5,15 +5,20 @@ import { Redis as RedisClient } from 'ioredis';
 
 @Injectable()
 export class UserAccessKeysService {
-
   private accessKeyMongoSvc: AccessKeyMongoService;
-  private publisher: RedisClient;
+  private channel: string;
 
   constructor(
     accessKeyMongoSvc: AccessKeyMongoService,
   ) {
     this.accessKeyMongoSvc = accessKeyMongoSvc;
-    this.publisher = new RedisClient();
+    this.channel = process.env.REDIS_PUBSUB_CHANNEL;
+  }
+
+  private async publish(message: string): Promise<void> {
+    const publisher = new RedisClient();
+    publisher.publish(this.channel, message);
+    publisher.quit();
   }
 
   async getKey(key: string) {
@@ -34,7 +39,7 @@ export class UserAccessKeysService {
     }
     accessKeyData.active = true;
     await accessKeyData.save();
-    this.publisher.publish(process.env.REDIS_PUBSUB_CHANNEL, JSON.stringify(accessKeyData));
+    this.publish(JSON.stringify(accessKeyData));
     return accessKeyData;
   }
 
@@ -48,7 +53,7 @@ export class UserAccessKeysService {
     }
     accessKeyData.active = false;
     await accessKeyData.save();
-    this.publisher.publish(process.env.REDIS_PUBSUB_CHANNEL, JSON.stringify(accessKeyData));
+    this.publish(JSON.stringify(accessKeyData));
     return accessKeyData;
   }
 }

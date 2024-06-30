@@ -1,27 +1,27 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import Redis, { Redis as RedisClient } from 'ioredis';
 
 import { AccessKey } from 'src/shared/schemas/mongo/access-key.schema';
 import { AccessKeyMongoService } from 'src/shared/models/mongo/access-key/access-key.service';
+import { Redis as RedisClient } from 'ioredis';
 import { v4 as uuidv4 } from 'uuid'; // For generating unique keys
 
 @Injectable()
 export class AdminAccessKeysService {
 
   private accessKeyMongoSvc: AccessKeyMongoService;
-  private publisher: RedisClient;
   private channel: string;
 
   constructor(
     accessKeyMongoSvc: AccessKeyMongoService
   ) {
     this.accessKeyMongoSvc = accessKeyMongoSvc;
-    this.publisher = new Redis();
     this.channel = process.env.REDIS_PUBSUB_CHANNEL;
   }
 
   private async publish(message: string): Promise<void> {
-    await this.publisher.publish(this.channel, message);
+    const publisher = new RedisClient();
+    publisher.publish(this.channel, message);
+    publisher.quit();
   }
 
   async generateKey(rateLimitPerMin: number, expireAt: Date): Promise<AccessKey> {
@@ -52,7 +52,6 @@ export class AdminAccessKeysService {
 
   async updateKey(key: string, rateLimitPerMin: number = null, expireAt: Date = null): Promise<AccessKey> {
     const response = await this.accessKeyMongoSvc.updateAccessKey(key, rateLimitPerMin, expireAt);
-    console.log("Response: ", response);
     await this.publish(JSON.stringify(response));
     return response;
   }
