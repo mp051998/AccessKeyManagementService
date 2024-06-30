@@ -18,6 +18,9 @@ export class AccessKey {
 
   @Prop({ required: true })
   expireAt: Date; // When the key expires
+
+  @Prop({ default: true })
+  active?: boolean; // User uses this to activate/deactivate the key
 }
 
 const AccessKeySchema = SchemaFactory.createForClass(AccessKey);

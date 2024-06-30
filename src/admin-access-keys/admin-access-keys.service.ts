@@ -31,10 +31,10 @@ export class AdminAccessKeysService {
       expireAt
     };
 
-    await this.accessKeyMongoSvc.createAccessKey(newKey.key, newKey.rateLimitPerMin, newKey.expireAt);
-    await this.publish(JSON.stringify(newKey));
+    const accessKeyData = await this.accessKeyMongoSvc.createAccessKey(newKey.key, newKey.rateLimitPerMin, newKey.expireAt);
+    await this.publish(JSON.stringify(accessKeyData));
 
-    return newKey;
+    return accessKeyData;
   }
 
   async getKey(key: string): Promise<AccessKey> {
