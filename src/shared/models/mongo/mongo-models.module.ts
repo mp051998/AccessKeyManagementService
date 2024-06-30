@@ -1,7 +1,7 @@
-import { AccessKey, AccessKeySchema } from 'src/schemas/mongo/access-key.schema';
+import { AccessKey, AccessKeySchema } from 'src/shared/schemas/mongo/access-key.schema';
 import { Global, Module } from '@nestjs/common';
 
-import { AccessKeyService } from './access-key/access-key.service';
+import { AccessKeyMongoService } from './access-key/access-key.service';
 import { MongooseModule } from '@nestjs/mongoose';
 
 @Global()
@@ -16,7 +16,7 @@ import { MongooseModule } from '@nestjs/mongoose';
       }
     ])
   ],
-  providers: [AccessKeyService],
-  exports: [AccessKeyService]
+  providers: [AccessKeyMongoService],
+  exports: [AccessKeyMongoService]
 })
 export class MongoModelsModule { }

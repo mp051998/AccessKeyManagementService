@@ -5,8 +5,9 @@ import { AdminAccessKeysModule } from './admin-access-keys/admin-access-keys.mod
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
-import { MongoModelsModule } from './models/mongo/mongo-models.module';
+import { MongoModelsModule } from './shared/models/mongo/mongo-models.module';
 import { MongooseModule } from '@nestjs/mongoose';
+import { UserAccessKeysModule } from './user-access-keys/user-access-keys.module';
 
 @Module({
   imports: [
@@ -24,7 +25,8 @@ import { MongooseModule } from '@nestjs/mongoose';
     }),
     MongooseModule.forRoot(process.env.MONGO_CONNECTION_STRING, {}),
     MongoModelsModule,
-    AdminAccessKeysModule
+    AdminAccessKeysModule,
+    UserAccessKeysModule
   ],
   controllers: [AppController],
   providers: [AppService],

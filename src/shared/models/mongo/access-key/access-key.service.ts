@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { AccessKey, AccessKeyDocument } from 'src/schemas/mongo/access-key.schema';
+import { AccessKey, AccessKeyDocument } from 'src/shared/schemas/mongo/access-key.schema';
 
 @Injectable()
-export class AccessKeyService {
+export class AccessKeyMongoService {
   constructor(@InjectModel(AccessKey.name) private accessKeyModel: Model<AccessKeyDocument>) { }
 
   // Create a new access key
@@ -13,8 +13,8 @@ export class AccessKeyService {
     return await accessKey.save();
   }
 
-  // Get an access key by key
-  async getAccessKeyByKey(key: string): Promise<AccessKeyDocument> {
+  // Get an access key
+  async getAccessKey(key: string): Promise<AccessKeyDocument> {
     return await this.accessKeyModel.findOne({ key });
   }
 
@@ -37,5 +37,17 @@ export class AccessKeyService {
       { rateLimitPerMin, expireAt },
       { new: true, useFindAndModify: false }
     );
+  }
+
+  // Delete an access key
+  // NOTE: I'm performing a soft delete here by setting the expireAt field to the current date
+  // This way we have a record of all the keys, we can have it restored if needed and it's easier for 
+  // redis pubsub to to handle as well.
+  async deleteAccessKey(key: string): Promise<AccessKeyDocument> {
+    // return await this.accessKeyModel.findOneAndDelete({ key });
+    const accessKeyData = await this.accessKeyModel.findOne({ key });
+    accessKeyData.expireAt = new Date();
+    await accessKeyData.save();
+    return accessKeyData;
   }
 }

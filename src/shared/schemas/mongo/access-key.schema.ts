@@ -4,12 +4,6 @@ import { Document } from 'mongoose';
 
 export type AccessKeyDocument = AccessKey & Document;
 
-class RateLimitUsage {
-  start: Date; // Start of the minute
-  end: Date; // End of the minute
-  count: number; // Number of requests made in the current minute
-}
-
 @Schema({
   timestamps: true,
   toJSON: { virtuals: true }, // Ensure virtuals are included when document is converted to JSON
@@ -24,9 +18,6 @@ export class AccessKey {
 
   @Prop({ required: true })
   expireAt: Date; // When the key expires
-
-  @Prop({ type: RateLimitUsage })
-  rateLimitUsage: RateLimitUsage;
 }
 
 const AccessKeySchema = SchemaFactory.createForClass(AccessKey);

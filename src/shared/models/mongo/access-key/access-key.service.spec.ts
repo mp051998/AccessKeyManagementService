@@ -1,15 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AccessKeyService } from './access-key.service';
+
+import { AccessKeyMongoService } from './access-key.service';
 
 describe('AccessKeyService', () => {
-  let service: AccessKeyService;
+  let service: AccessKeyMongoService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [AccessKeyService],
+      providers: [AccessKeyMongoService],
     }).compile();
 
-    service = module.get<AccessKeyService>(AccessKeyService);
+    service = module.get<AccessKeyMongoService>(AccessKeyMongoService);
   });
 
   it('should be defined', () => {

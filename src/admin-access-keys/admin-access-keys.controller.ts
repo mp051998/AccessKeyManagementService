@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 
 import { AdminAccessKeysService } from './admin-access-keys.service';
 
@@ -46,6 +46,12 @@ export class AdminAccessKeysController {
     }
     return await this.adminAccessKeysSvc.updateKey(key, rateLimitPerMin, expireAt);
   }
+
+  @Delete('/:key')
+  async deleteKey(@Param('key') key: string) {
+    return await this.adminAccessKeysSvc.deleteKey(key);
+  }
+
 
   // // TODO: Since the token service will be using redis pub-sub to cache valid tokens and maintain rate limits,
   // //  we probably don't need this here. Should've read the requirements properly and made the microservices on by one :)

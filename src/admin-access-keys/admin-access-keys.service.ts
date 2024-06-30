@@ -1,21 +1,21 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import Redis, { Redis as RedisClient } from 'ioredis';
 
-import { AccessKey } from 'src/models/access-key.model';
-import { AccessKeyService } from 'src/models/mongo/access-key/access-key.service';
+import { AccessKey } from 'src/shared/schemas/mongo/access-key.schema';
+import { AccessKeyMongoService } from 'src/shared/models/mongo/access-key/access-key.service';
 import { v4 as uuidv4 } from 'uuid'; // For generating unique keys
 
 @Injectable()
 export class AdminAccessKeysService {
 
-  private accessKeySvc: AccessKeyService;
+  private accessKeyMongoSvc: AccessKeyMongoService;
   private publisher: RedisClient;
   private channel: string;
 
   constructor(
-    accessKeySvc: AccessKeyService,
+    accessKeyMongoSvc: AccessKeyMongoService
   ) {
-    this.accessKeySvc = accessKeySvc;
+    this.accessKeyMongoSvc = accessKeyMongoSvc;
     this.publisher = new Redis();
     this.channel = process.env.REDIS_PUBSUB_CHANNEL;
   }
@@ -31,14 +31,14 @@ export class AdminAccessKeysService {
       expireAt
     };
 
-    await this.accessKeySvc.createAccessKey(newKey.key, newKey.rateLimitPerMin, newKey.expireAt);
+    await this.accessKeyMongoSvc.createAccessKey(newKey.key, newKey.rateLimitPerMin, newKey.expireAt);
     await this.publish(JSON.stringify(newKey));
 
     return newKey;
   }
 
   async getKey(key: string): Promise<AccessKey> {
-    const response = await this.accessKeySvc.getAccessKeyByKey(key);
+    const response = await this.accessKeyMongoSvc.getAccessKey(key);
     if (!response) {
       throw new NotFoundException('Access key not found');
     }
@@ -47,13 +47,22 @@ export class AdminAccessKeysService {
 
   // Method to get all the active keys
   async getActiveKeys(): Promise<Array<AccessKey>> {
-    return await this.accessKeySvc.getAllActiveAccessKeys();
+    return await this.accessKeyMongoSvc.getAllActiveAccessKeys();
   }
 
   async updateKey(key: string, rateLimitPerMin: number = null, expireAt: Date = null): Promise<AccessKey> {
-    const response = await this.accessKeySvc.updateAccessKey(key, rateLimitPerMin, expireAt);
+    const response = await this.accessKeyMongoSvc.updateAccessKey(key, rateLimitPerMin, expireAt);
     console.log("Response: ", response);
     await this.publish(JSON.stringify(response));
+    return response;
+  }
+
+  async deleteKey(key: string): Promise<AccessKey> {
+    const accessKeyData = await this.accessKeyMongoSvc.getAccessKey(key);
+    const response = await this.accessKeyMongoSvc.deleteAccessKey(key);
+    accessKeyData.expireAt = new Date();
+    // Since the redis pubsub expires whenever the expireAt has reached, we can just publish the key with an expired date
+    await this.publish(JSON.stringify(accessKeyData));
     return response;
   }
 
