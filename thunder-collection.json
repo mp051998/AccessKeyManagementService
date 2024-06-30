@@ -1,0 +1,125 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "AccessKeyManagementService",
+    "collectionId": "2ca94274-81c2-4c48-b79a-3f7cb6c75612",
+    "dateExported": "2024-06-30T20:21:24.353Z",
+    "version": "1.2",
+    "folders": [
+        {
+            "_id": "2c0bb042-17d2-4b76-bd14-9689016f0b10",
+            "name": "admin",
+            "containerId": "",
+            "created": "2024-06-30T10:16:50.422Z",
+            "sortNum": 10000
+        },
+        {
+            "_id": "50221987-c143-4921-b2b1-2a6a06aa9b18",
+            "name": "user",
+            "containerId": "",
+            "created": "2024-06-30T10:17:16.971Z",
+            "sortNum": 20000
+        }
+    ],
+    "requests": [
+        {
+            "_id": "9f2da293-4111-43ff-bd3c-123d83bed950",
+            "colId": "2ca94274-81c2-4c48-b79a-3f7cb6c75612",
+            "containerId": "2c0bb042-17d2-4b76-bd14-9689016f0b10",
+            "name": "[DEPRECATED] Use Access Key",
+            "url": "http://localhost:3000/admin/access-keys",
+            "method": "PUT",
+            "sortNum": 10000,
+            "created": "2024-06-28T11:30:34.149Z",
+            "modified": "2024-06-29T20:43:18.108Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"key\": \"78f8a69a-ac67-49eb-93dc-ae018f13a802\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "5c055f8c-f8a6-460d-bb4a-8b0fefbe26d8",
+            "colId": "2ca94274-81c2-4c48-b79a-3f7cb6c75612",
+            "containerId": "50221987-c143-4921-b2b1-2a6a06aa9b18",
+            "name": "Activate/Deactivate Access Key",
+            "url": "http://localhost:3000/user/access-keys/f14f06ab-b295-4a1b-a2bc-422d47108eac",
+            "method": "PATCH",
+            "sortNum": 10000,
+            "created": "2024-06-30T10:16:38.235Z",
+            "modified": "2024-06-30T10:36:28.418Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"active\": true\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "75e4fea7-3772-41a5-9cbf-dff252fe2a81",
+            "colId": "2ca94274-81c2-4c48-b79a-3f7cb6c75612",
+            "containerId": "2c0bb042-17d2-4b76-bd14-9689016f0b10",
+            "name": "Get Access Key",
+            "url": "http://localhost:3000/admin/access-keys/bde8e8b1-0b72-41a4-8f15-3a014a515622",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2024-06-28T11:30:50.231Z",
+            "modified": "2024-06-30T09:44:54.431Z",
+            "headers": []
+        },
+        {
+            "_id": "b9f37770-6a63-4227-bf28-9be2280a6f8d",
+            "colId": "2ca94274-81c2-4c48-b79a-3f7cb6c75612",
+            "containerId": "2c0bb042-17d2-4b76-bd14-9689016f0b10",
+            "name": "Create Access Key",
+            "url": "http://localhost:3000/admin/access-keys",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2024-06-28T11:31:14.651Z",
+            "modified": "2024-06-29T20:42:51.978Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"rateLimitPerMin\": 10,\n  \"expireAfterMins\": 30\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "cfeb67d0-3ef8-410d-8b2e-0558e718098a",
+            "colId": "2ca94274-81c2-4c48-b79a-3f7cb6c75612",
+            "containerId": "2c0bb042-17d2-4b76-bd14-9689016f0b10",
+            "name": "Get all Active Access Keys",
+            "url": "http://localhost:3000/admin/access-keys",
+            "method": "GET",
+            "sortNum": 40000,
+            "created": "2024-06-28T11:31:38.540Z",
+            "modified": "2024-06-29T20:42:42.883Z",
+            "headers": []
+        },
+        {
+            "_id": "bd2aa995-4482-4a0f-a24a-9d3671d9da2c",
+            "colId": "2ca94274-81c2-4c48-b79a-3f7cb6c75612",
+            "containerId": "2c0bb042-17d2-4b76-bd14-9689016f0b10",
+            "name": "Delete Key",
+            "url": "http://localhost:3000/admin/access-keys/fff5b7ea-f5a6-497f-be39-9cde3c8e6bee",
+            "method": "DELETE",
+            "sortNum": 50000,
+            "created": "2024-06-30T09:45:09.934Z",
+            "modified": "2024-06-30T09:45:09.934Z",
+            "headers": []
+        },
+        {
+            "_id": "e4e8bbe7-504e-4d61-a530-62749776ffbe",
+            "colId": "2ca94274-81c2-4c48-b79a-3f7cb6c75612",
+            "containerId": "50221987-c143-4921-b2b1-2a6a06aa9b18",
+            "name": "Get Access Key",
+            "url": "http://localhost:3000/user/access-keys/f14f06ab-b295-4a1b-a2bc-422d47108eac",
+            "method": "GET",
+            "sortNum": 60000,
+            "created": "2024-06-30T10:17:50.949Z",
+            "modified": "2024-06-30T10:17:50.949Z",
+            "headers": []
+        }
+    ],
+    "ref": "gQ-NNVNOb8Ccfe0WurfUt2ju2PlXJN2NwHs0IklGUgYBHt5QXtua12p4_BfwsaY986qpeAi7YCqQ9W4A38CFrg"
+}
