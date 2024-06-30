@@ -56,3 +56,8 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+
+## API Collection (Thunder Client):
+
+NOTE: This collection is for the local environment. The base URL is set to `http://localhost:3000`. Change the base URL to the deployed URL if you want to use it in a deployed environment.
+Can be found [here](./thunder-collection.json)
