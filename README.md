@@ -3,7 +3,7 @@
 ## Description
 
 This is a simple nest app to allow admins to generate custom access keys to users. This service acts as a middleware of sorts and enforces rate limiting on the access keys. The access keys are stored in a redis datastore and the rate limiting is enforced using custom logic in the access key service.
-This app works alongside [here](https://github.com/mp051998/Web3TokenInformationService)
+This app works alongside [token service app](https://github.com/mp051998/Web3TokenInformationService)
 
 ## Installation
 
